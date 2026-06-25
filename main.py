@@ -43,7 +43,9 @@ def main():
         print(f"User prompt: {args.user_prompt}")
     print(f"Prompt tokens: {prompt_tokens}")
     print(f"Response tokens: {response_tokens}")
-    function_call_result = call_function(response.function_calls[0])
+    function_call_result = call_function(
+        response.function_calls[0], verbose=args.verbose
+    )
     if not function_call_result.parts:
         raise Exception("Function call failed")
     if not function_call_result.parts[0].function_response:
@@ -53,6 +55,10 @@ def main():
 
     function_results = []
     function_results.append(function_call_result.parts[0].function_response.response)
+    if args.verbose:
+        print(f"-> {function_call_result.parts[0].function_response.response}")
+    else:
+        print(f"-> {function_call.name}({function_call.args})")
 
 
 # def main():
